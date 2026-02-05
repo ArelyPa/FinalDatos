@@ -1,20 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { getEstudiantes, createEstudiante, updateEstudiante, deleteEstudiante, syncPostgresToMongo, syncMongoToPostgres } from './api/estudiantesApi';
+import {
+  getEstudiantes,
+  createEstudiante,
+  updateEstudiante,
+  deleteEstudiante,
+  syncPostgresToMongo,
+  syncMongoToPostgres
+} from './api/estudiantesApi';
+
 import { EstudianteList } from './components/EstudianteList';
 import { EstudianteForm } from './components/EstudianteForm';
 import { SyncButtons } from './components/SyncButtons';
+import './App.css';
 
 function App() {
+
   const [estudiantes, setEstudiantes] = useState([]);
   const [editEstudiante, setEditEstudiante] = useState(null);
 
   const fetchData = async () => setEstudiantes(await getEstudiantes());
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleSave = async (data) => {
-    if (data.id) await updateEstudiante(data.id, data);
-    else await createEstudiante(data);
+
+    if (data.id) {
+      await updateEstudiante(data.id, data);
+      alert('Se editó correctamente');
+    } else {
+      await createEstudiante(data);
+      alert('Se creó correctamente');
+    }
+
     setEditEstudiante(null);
     fetchData();
   };
@@ -31,18 +50,46 @@ function App() {
 
   const handleSyncMongoToPG = async () => {
     await syncMongoToPostgres();
-    fetchData(); 
+    fetchData();
     alert('Sincronización MongoDB → PostgreSQL completada');
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl mb-4">Gestión de Estudiantes</h1>
-      <SyncButtons onSyncPGtoMongo={handleSyncPGtoMongo} onSyncMongoToPG={handleSyncMongoToPG} />
-      <EstudianteForm estudiante={editEstudiante} onSave={handleSave} onCancel={() => setEditEstudiante(null)} />
-      <EstudianteList estudiantes={estudiantes} onEdit={setEditEstudiante} onDelete={handleDelete} />
-    </div>
-  );
+
+  <>
+    <header>
+      <h1>Gestión de Estudiantes</h1>
+      <p>Administración y sincronización de datos</p>
+    </header>
+
+    <main>
+
+      <div className="card">
+        <SyncButtons
+          onSyncPGtoMongo={handleSyncPGtoMongo}
+          onSyncMongoToPG={handleSyncMongoToPG}
+        />
+      </div>
+
+      <div className="card">
+        <EstudianteForm
+          estudiante={editEstudiante}
+          onSave={handleSave}
+          onCancel={() => setEditEstudiante(null)}
+        />
+      </div>
+
+      <div className="card">
+        <EstudianteList
+          estudiantes={estudiantes}
+          onEdit={setEditEstudiante}
+          onDelete={handleDelete}
+        />
+      </div>
+
+    </main>
+  </>
+);
 }
 
 export default App;

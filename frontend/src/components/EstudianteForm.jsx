@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 export const EstudianteForm = ({ estudiante, onSave, onCancel }) => {
+
   const [form, setForm] = useState({
     nombre: '',
     apellido: '',
@@ -13,7 +14,7 @@ export const EstudianteForm = ({ estudiante, onSave, onCancel }) => {
     if (estudiante) {
       setForm(estudiante);
     } else {
-      setForm({ nombre: '', apellido: '', materia: '', nota1: '', nota2: '' });
+      setForm({ nombre:'', apellido:'', materia:'', nota1:'', nota2:'' });
     }
   }, [estudiante]);
 
@@ -27,17 +28,37 @@ export const EstudianteForm = ({ estudiante, onSave, onCancel }) => {
   };
 
   return (
+
     <div>
-      <h2>{estudiante ? 'Editar Estudiante' : 'Agregar Estudiante'}</h2>
-      <form onSubmit={handleSubmit}>
+
+      <h2 className="section-title">
+        {estudiante ? 'Editar Estudiante' : 'Agregar Estudiante'}
+      </h2>
+
+      <form className="form-grid" onSubmit={handleSubmit}>
+
         <input name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} required />
         <input name="apellido" placeholder="Apellido" value={form.apellido} onChange={handleChange} required />
         <input name="materia" placeholder="Materia" value={form.materia} onChange={handleChange} required />
         <input type="number" name="nota1" placeholder="Nota 1" value={form.nota1} onChange={handleChange} required />
         <input type="number" name="nota2" placeholder="Nota 2" value={form.nota2} onChange={handleChange} required />
-        <button type="submit">{estudiante ? 'Actualizar' : 'Crear'}</button>
-        {estudiante && <button type="button" onClick={onCancel}>Cancelar</button>}
+
+        <div className="form-buttons">
+
+          <button className="btn" type="submit">
+            {estudiante ? 'Actualizar' : 'Crear'}
+          </button>
+
+          {estudiante && (
+            <button className="btn secondary" type="button" onClick={onCancel}>
+              Cancelar
+            </button>
+          )}
+
+        </div>
+
       </form>
+
     </div>
   );
 };

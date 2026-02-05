@@ -1,0 +1,19 @@
+{
+  "name": "instituto-backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Backend del proyecto de integración PostgreSQL ↔ MongoDB",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^4.19.2",
+    "mongodb": "^7.0.0",
+    "pg": "^8.18.0"
+  }
+}
